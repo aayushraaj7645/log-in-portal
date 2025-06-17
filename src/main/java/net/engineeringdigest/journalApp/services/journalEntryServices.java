@@ -43,6 +43,7 @@ public class journalEntryServices {
     }
 
 
+
     @Transactional
     public boolean deleteJournalEntryByIdAndUsername(ObjectId id, String username){
        User user = userEntryServices.getByUsername(username);
