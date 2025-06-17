@@ -56,16 +56,16 @@ public class userEntryControllerV2 {
              return new ResponseEntity<>("user not found" , HttpStatus.NOT_FOUND);
          }
     }
-     @DeleteMapping
-     private ResponseEntity<?> delete(){
-        if( userEntryServices.deleteUser()){
-            return new ResponseEntity<>("deleted", HttpStatus.OK);
-        }else {
-            return new ResponseEntity<>("not deleted", HttpStatus.BAD_REQUEST);
-        }
-
-     }
-
+//     @DeleteMapping
+//     private ResponseEntity<?> delete(){
+//        if( userEntryServices.deleteUser()){
+//            return new ResponseEntity<>("deleted", HttpStatus.OK);
+//        }else {
+//            return new ResponseEntity<>("not deleted", HttpStatus.BAD_REQUEST);
+//        }
+//
+//     }
+//
 
 
     }

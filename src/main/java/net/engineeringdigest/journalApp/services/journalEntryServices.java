@@ -8,6 +8,7 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -40,12 +41,20 @@ public class journalEntryServices {
     public Optional<entity> getById(ObjectId id) {
         return journalEntryRepository.findById(id);
     }
-    public boolean deleteEntry(ObjectId id, String username){
+    @Transactional
+    public boolean deleteJournalEntryByIdAndUsername(ObjectId id, String username){
        User user = userEntryServices.getByUsername(username);
-       user.getEntities().removeIf(e -> e.getId().equals(id));
-       userEntryServices.saveUserEntry(user);
+        boolean removed = user.getEntities().removeIf(e -> e.getId().equals(id));
+ if (removed) {
         journalEntryRepository.deleteById(id);
-        return true;
+        userEntryRepository.save(user);
+
+
+
+        return true;}
+ else {
+     return false;
+ }
     }
 
 }
