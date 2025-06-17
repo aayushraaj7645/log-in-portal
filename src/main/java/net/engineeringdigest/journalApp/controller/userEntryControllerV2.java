@@ -21,9 +21,9 @@ public class userEntryControllerV2 {
     private userEntryServices userEntryServices;
     @Autowired
     private userEntryRepository userEntryRepository;
-
     @Autowired
     private journalEntryServices journalEntryServices;
+
 
     @GetMapping
     public ResponseEntity<?> getUser() {
@@ -56,16 +56,7 @@ public class userEntryControllerV2 {
              return new ResponseEntity<>("user not found" , HttpStatus.NOT_FOUND);
          }
     }
-//     @DeleteMapping
-//     private ResponseEntity<?> delete(){
-//        if( userEntryServices.deleteUser()){
-//            return new ResponseEntity<>("deleted", HttpStatus.OK);
-//        }else {
-//            return new ResponseEntity<>("not deleted", HttpStatus.BAD_REQUEST);
-//        }
-//
-//     }
-//
+
 
 
     }

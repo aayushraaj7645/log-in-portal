@@ -22,11 +22,11 @@ public class journalEntryServices {
     @Autowired
     private userEntryRepository userEntryRepository;
 
-
+@Transactional
     public void saveEntry(entity journalEntry, String username){
        User user = userEntryServices.getByUsername(username);
-        journalEntryRepository.save(journalEntry);
-        user.getEntities().add(journalEntry);
+       entity entity =  journalEntryRepository.save(journalEntry);
+        user.getEntities().add(entity);
        userEntryRepository.save(user);
        //return journalEntry;
 
@@ -41,16 +41,15 @@ public class journalEntryServices {
     public Optional<entity> getById(ObjectId id) {
         return journalEntryRepository.findById(id);
     }
+
+
     @Transactional
     public boolean deleteJournalEntryByIdAndUsername(ObjectId id, String username){
        User user = userEntryServices.getByUsername(username);
         boolean removed = user.getEntities().removeIf(e -> e.getId().equals(id));
  if (removed) {
+     userEntryRepository.save(user);
         journalEntryRepository.deleteById(id);
-        userEntryRepository.save(user);
-
-
-
         return true;}
  else {
      return false;

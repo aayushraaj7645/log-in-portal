@@ -15,19 +15,19 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @SpringBootApplication
 @EnableTransactionManagement
 public class SecurityConfigure extends WebSecurityConfigurerAdapter {
-    @Autowired
+    @Autowired       // uded is defined in publicController
     private UserDetailServicesImplements userDetailServicesImplements;
  @Override
     protected void configure(HttpSecurity http) throws Exception{
-          http.authorizeRequests().antMatchers("/journal/**" , "/user/**").authenticated()
-                  .anyRequest().permitAll()
+          http.authorizeRequests().antMatchers("/journal/**" , "/user/**").authenticated()    // these are used to tag which of them will require authentication for access
+                  .anyRequest().permitAll()                                                       // in this case  (journal and user ) need authentication rest don't
                           .and().
                     httpBasic();
-          http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().csrf().disable();
+          http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().csrf().disable();       // something related to stateless and csrf , need to study further as they are important
 }
 @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
-     auth.userDetailsService(userDetailServicesImplements).passwordEncoder(passwordEncoder());
+     auth.userDetailsService(userDetailServicesImplements).passwordEncoder(passwordEncoder());    // to encode the password which we will provide with the username
 }
 
 

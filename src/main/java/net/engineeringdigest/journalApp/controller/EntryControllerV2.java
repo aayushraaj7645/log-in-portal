@@ -22,27 +22,27 @@ import java.util.stream.Collectors;
 public class EntryControllerV2 {
 
     @Autowired
-    private journalEntryServices journalEntryServices;
+    private journalEntryServices journalEntryServices;         // autowired iS defind in PublicControlller
     @Autowired
     private userEntryServices userEntryServices;
     @Autowired
     private userEntryRepository userEntryRepository;
 
-//    @GetMapping
-//    public List<entity> getAllEntries() {
-//        return journalEntryServices.getAll();
-//    }
 
-//    @GetMapping
-//    public List<entity> getUsernameEntries() {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        String username = authentication.getName();
-//        User user = userEntryServices.getByUsername(username);
-//        return user.getEntities();
-//    }
+// GET METHOD TO GET ALL THE ENTITY PRESENT IN THAT PARTICULAR USER, WHOSE USERNAME AND PASSWORD YOU WILL PROVIDE IN BASIC AUTH SECTION
+    // IN THE POSTMAN6
+    @Transactional                               //  "TRANSACTIONAL"  , THIS IS TO MAKE THE WHOLE METHOD OR OPERATION AS ATOMIC
+    @GetMapping   //THIS METHOD IS USED TO GET ALL THE INPUT RELATED TO THE CERTAIN USER, USERNAME AND PASSWORD YOU WILL PUT IN BASIC AUTH SECTION
+    public List<entity> getUsernameEntries() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        User user = userEntryServices.getByUsername(username);
+        return user.getEntities();
+    }
 
-
-    @PostMapping
+  // THIS METHOD IS TO INPUT THE DATA RELATED TO THE USER, HERE IN THIS CASE IT IS "TITLE" AND "CONTENT".
+@Transactional
+    @PostMapping                 // YOU HAVE TO PUT USERNAME AND PASSWORD OF THAT CERTAIN USER
     public void postJournalEntry(@RequestBody entity journalEntry) {
         try{
             String username= SecurityContextHolder.getContext().getAuthentication().getName();
@@ -51,103 +51,17 @@ public class EntryControllerV2 {
         catch (RuntimeException e){
             throw new RuntimeException(e);
         }
-
-
     }
-//    @GetMapping("id/{myId}")
-//    public ResponseEntity<?> getSpecificId(@PathVariable ObjectId myId){
-//       String username = SecurityContextHolder.getContext().getAuthentication().getName();
-//       User user = userEntryServices.getByUsername(username);
-//       List <entity> entities = user.getEntities().stream().filter(e -> e.getId().equals(myId)).collect(Collectors.toList());
-//       if(!entities.isEmpty()){
-//           return new ResponseEntity<>(entities.get(0),HttpStatus.OK);
-//       }
-//    else{
-//    return new ResponseEntity<>("NOT FOUND", HttpStatus.NOT_FOUND);
-//
-//       }}
 
+//THIS METHOD IS USED TO DELETE THE USER DETAIL RELATED TO SOME SPECIFIC ID, ID WILL BE ALLOTTED AUTOMATICALLY WHEN YOU USE "SAVE" OPTION TO SAVE THE INPUT FROM POST OPERATION
 @Transactional
     @DeleteMapping("id/{myId}")
         public ResponseEntity<?> deleteBySpecificId(@PathVariable ObjectId myId){
             String username = SecurityContextHolder.getContext().getAuthentication().getName();
             User user = userEntryServices.getByUsername(username);
-            List <entity> entities = user.getEntities().stream().filter(e -> e.getId().equals(myId)).collect(Collectors.toList());
-            if(!entities.isEmpty()){
            journalEntryServices.deleteJournalEntryByIdAndUsername(myId,username);
-            //  userEntryServices.saveNewUserEntry(user);
-//              user.setEntities(entities);
-              return new ResponseEntity<>("deleted",HttpStatus.OK);
-            }
-            else{
 
-
-    }
-
-
-
-
-
-
-
-
-
-    //@Transactional
-//    @PostMapping("{username}")
-//    public boolean postJournalEntry(@RequestBody entity journalEntry, @PathVariable String username) {
-//        entity Entity = journalEntryServices.saveEntry(journalEntry, username);
-//        User user = userEntryServices.getByUsername(username);
-//        user.getEntities().add(Entity);
-//        userEntryServices.saveUserEntry(user);
-//        return true;
-//
-//    }
-
-
-//  @GetMapping("/id/{Myid}")
-//    public ResponseEntity<entity> getSpecificId(@PathVariable ObjectId Myid)
-//  { Optional <entity> entity = journalEntryServices.getById(Myid);
-//      if(entity.isPresent())
-//      {
-//          return new ResponseEntity<>(entity.get(),HttpStatus.OK);
-//      }
-//      else
-//      {
-//          return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//      }
-//
-//
-//  }
-//
-//    @DeleteMapping("/{username}/{Myid}")
-//    public ResponseEntity<?> deleteSpecificId(@PathVariable ObjectId Myid, @PathVariable String username) {
-//        if (journalEntryServices.deleteEntry(Myid, username)) {
-//            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//        } else {
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        }
-//    }
-
-//    @PutMapping("/{username}/{Myid}")
-//    public ResponseEntity<?> updateSpecificId(@RequestBody entity journalEntry, @PathVariable String username, @PathVariable ObjectId Myid) {
-//        User user = userEntryServices.getByUsername(username);
-//
-//        if (journalEntryServices.getById(Myid).isPresent())
-//        {
-//              journalEntry.setId(Myid);
-//            journalEntryServices.saveEntry(journalEntry, username);
-//            user.getEntities().add(journalEntry);
-//          //  user.getEntities().removeIf(e -> e.getId().equals(Myid));
-//            return new ResponseEntity<>(HttpStatus.OK);
-//        }
-//        else{
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        }
-//
-//    }
-
-
-
+              return new ResponseEntity<>("deleted",HttpStatus.OK);}
 
 
 
