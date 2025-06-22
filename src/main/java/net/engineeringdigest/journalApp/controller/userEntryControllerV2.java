@@ -37,6 +37,15 @@ public class userEntryControllerV2 {
                  return new ResponseEntity<>("DIDN'T GET THE DATA", HttpStatus.NOT_FOUND);
              }
     }
+    @PostMapping("/createUser")
+    public ResponseEntity<?> createNewUser(@RequestBody User newUser){
+        try{
+        userEntryServices.saveUserEntry(newUser);
+        return new ResponseEntity<>(newUser,HttpStatus.OK);}
+        catch(Exception e){
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
+        }
+    }
 
 
 

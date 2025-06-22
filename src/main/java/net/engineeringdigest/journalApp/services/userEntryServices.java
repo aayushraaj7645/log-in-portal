@@ -34,6 +34,7 @@ public class userEntryServices {
 
     public User saveUserEntry(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRoles(List.of("user"));
         return userEntryRepository.save(user);
     }
 
@@ -41,6 +42,13 @@ public class userEntryServices {
         return  userEntryRepository.save(user);
 
     }
+    public User saveAdminEntry(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRoles(List.of("user", "admin"));
+        return userEntryRepository.save(user);
+    }
+
+
 
     public List<User> getAll() {
         return userEntryRepository.findAll();
