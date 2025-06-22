@@ -26,7 +26,7 @@ public class User {
     @NonNull
     private String password ;
 
-    private String roles ;
+    private List<String> roles ;
     @DBRef
     private List<entity> entities = new ArrayList<>();
 

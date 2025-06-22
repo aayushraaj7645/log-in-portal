@@ -15,13 +15,15 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @SpringBootApplication
 @EnableTransactionManagement
 public class SecurityConfigure extends WebSecurityConfigurerAdapter {
-    @Autowired       // uded is defined in publicController
+    @Autowired       // used is defined in publicController
     private UserDetailServicesImplements userDetailServicesImplements;
  @Override
     protected void configure(HttpSecurity http) throws Exception{
-          http.authorizeRequests().antMatchers("/journal/**" , "/user/**").authenticated()    // these are used to tag which of them will require authentication for access
+          http.authorizeRequests()
+                  .antMatchers("/journal/**" , "/user/**").authenticated()    // these are used to tag which of them will require authentication for access
+                  .antMatchers("/admin/**").hasRole("admin")
                   .anyRequest().permitAll()                                                       // in this case  (journal and user ) need authentication rest don't
-                          .and().
+                  .and().
                     httpBasic();
           http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().csrf().disable();       // something related to stateless and csrf , need to study further as they are important
 }
