@@ -2,6 +2,7 @@ package net.engineeringdigest.journalApp.controller;
 
 import net.engineeringdigest.journalApp.entity.User;
 import net.engineeringdigest.journalApp.repository.userEntryRepository;
+import net.engineeringdigest.journalApp.services.WeatherService;
 import net.engineeringdigest.journalApp.services.journalEntryServices;
 import net.engineeringdigest.journalApp.services.userEntryServices;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +24,29 @@ public class userEntryControllerV2 {
     private userEntryRepository userEntryRepository;
     @Autowired
     private journalEntryServices journalEntryServices;
-
+    @Autowired
+    private WeatherService weatherService;
 
     @GetMapping
+    public ResponseEntity<?> greeting(){
+      Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+      return  new ResponseEntity<>("hi "+ authentication.getName() +weatherService.getWeather(
+              "Mumbai").getCurrent().getFeelslike() + weatherService.getWeather("mumbai").getCurrent().getTemperature(),
+              HttpStatus.OK);
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+    @GetMapping("/user")
     public ResponseEntity<?> getUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
                 String username = authentication.getName();
@@ -37,6 +58,7 @@ public class userEntryControllerV2 {
                  return new ResponseEntity<>("DIDN'T GET THE DATA", HttpStatus.NOT_FOUND);
              }
     }
+
     @PostMapping("/createUser")
     public ResponseEntity<?> createNewUser(@RequestBody User newUser){
         try{

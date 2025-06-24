@@ -25,7 +25,7 @@ public class PublicController {
             User user = userEntryServices.saveUserEntry(newUser);
             return new ResponseEntity<>(user , HttpStatus.ACCEPTED);   //ResponseEntity is used to sent the status of the operation like it is OK or NOT_DONE or  NO_CONTENT.
         } catch (RuntimeException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(e.getMessage());
         }
         finally {
             System.out.println("POST OPERATION WORKED  ");
